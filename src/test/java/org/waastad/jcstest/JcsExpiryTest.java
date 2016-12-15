@@ -10,6 +10,7 @@ import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
+import javax.cache.expiry.AccessedExpiryPolicy;
 import javax.cache.expiry.CreatedExpiryPolicy;
 import javax.cache.expiry.Duration;
 import javax.cache.spi.CachingProvider;
@@ -24,7 +25,7 @@ import static org.junit.Assert.*;
  *
  * @author Helge Waastad <helge.waastad@datametrix.no>
  */
-public class JcsClassTest {
+public class JcsExpiryTest {
 
     private CachingProvider cachingProvider;
     private CacheManager cacheManager;
@@ -34,7 +35,7 @@ public class JcsClassTest {
     private static final Integer value = 2;
     private final String cacheName = "my-cache";
 
-    public JcsClassTest() {
+    public JcsExpiryTest() {
     }
 
     @BeforeClass
@@ -56,7 +57,7 @@ public class JcsClassTest {
                 .setStatisticsEnabled(true)
                 .setManagementEnabled(true)
                 .setTypes(Integer.class, Integer.class)
-                .setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(new Duration(TimeUnit.MILLISECONDS, 10))));
+                .setExpiryPolicyFactory(AccessedExpiryPolicy.factoryOf(new Duration(TimeUnit.MILLISECONDS, 10))));
         cache = cacheManager.getCache(cacheName, Integer.class, Integer.class);
 
     }
@@ -82,7 +83,9 @@ public class JcsClassTest {
         cache = cacheManager.getCache(cacheName, Integer.class, Integer.class);
         cache.put(name, value);
         cache.get(name);
-        Thread.sleep(8);
+        Thread.sleep(12);
+        assertFalse(cache.containsKey(name));
+        cache.put(name, value);
         assertTrue(cache.containsKey(name));
     }
 
@@ -98,7 +101,7 @@ public class JcsClassTest {
         cache.get(name);
         Thread.sleep(5);
         cache.get(name);
-        assertFalse(cache.containsKey(name));
+        assertTrue(cache.containsKey(name));
     }
 
 }
