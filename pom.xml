@@ -7,8 +7,8 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -21,6 +21,22 @@
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
         </dependency>
     </dependencies>
     <repositories>
@@ -56,6 +72,33 @@
                     <artifactId>commons-jcs-jcache</artifactId>
                     <version>2.0-beta-2</version>
                 </dependency>       
+            </dependencies>
+        </profile>
+        <profile>
+            <id>2.2</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-jcs-jcache</artifactId>
+                    <version>2.2</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>ignite</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.ignite</groupId>
+                    <artifactId>ignite-core</artifactId>
+                    <version>2.4.0</version>
+                </dependency>
             </dependencies>
         </profile>
     </profiles>
